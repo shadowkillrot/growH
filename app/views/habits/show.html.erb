@@ -1,0 +1,52 @@
+<div class="max-w-4xl mx-auto">
+  <div class="flex justify-between items-center mb-8">
+    <%= link_to dashboard_path, class: "text-gray-600 hover:text-gray-900" do %>
+      ← Back to Dashboard
+    <% end %>
+    <div class="space-x-3">
+      <%= link_to "Edit", edit_habit_path(@habit), class: "text-green-600 hover:text-green-700" %>
+      <%= button_to "Delete", habit_path(@habit), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:text-red-700" %>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @habit.title %></h1>
+    <p class="text-gray-600 mb-6"><%= @habit.description %></p>
+
+    <div class="grid grid-cols-3 gap-6">
+      <div class="text-center">
+        <p class="text-4xl font-bold text-orange-600"><%= @habit.current_streak %></p>
+        <p class="text-gray-600">Day Streak</p>
+      </div>
+      <div class="text-center">
+        <p class="text-4xl font-bold text-green-600"><%= @habit.total_completions %></p>
+        <p class="text-gray-600">Total Completions</p>
+      </div>
+      <div class="text-center">
+        <p class="text-4xl font-bold text-blue-600"><%= @habit.completion_rate %>%</p>
+        <p class="text-gray-600">Success Rate</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md p-8">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Progress</h2>
+    
+    <% if @progress_logs.any? %>
+      <div class="space-y-3">
+        <% @progress_logs.each do |log| %>
+          <div class="flex items-center justify-between border-b pb-3">
+            <span class="text-gray-700"><%= log.logged_date.strftime("%B %d, %Y") %></span>
+            <% if log.completed %>
+              <span class="text-green-600 font-medium">✓ Completed</span>
+            <% else %>
+              <span class="text-gray-400">✗ Skipped</span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500 text-center py-8">No progress logged yet. Start today!</p>
+    <% end %>
+  </div>
+</div>

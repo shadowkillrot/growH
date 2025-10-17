@@ -1,0 +1,104 @@
+<div class="space-y-8">
+  <!-- Motivational Quote -->
+  <div class="bg-gradient-to-r from-green-500 to-teal-500 rounded-lg p-8 text-white text-center">
+    <p class="text-2xl font-light italic">"<%= @quote %>"</p>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-gray-500 text-sm font-medium">Total Habits</h3>
+      <p class="text-3xl font-bold text-gray-900"><%= @habits.count %></p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-gray-500 text-sm font-medium">Completed Today</h3>
+      <p class="text-3xl font-bold text-green-600">
+        <%= @habits.select(&:completed_today?).count %>
+      </p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-gray-500 text-sm font-medium">Best Streak</h3>
+      <p class="text-3xl font-bold text-orange-600">
+        <%= @habits.map(&:current_streak).max || 0 %> days
+      </p>
+    </div>
+  </div>
+
+  <!-- Habits List -->
+  <div>
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-gray-900">Your Habits</h2>
+      <%= link_to "Create New Habit", new_habit_path, class: "bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700" %>
+    </div>
+
+    <% if @habits.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <% @habits.each do |habit| %>
+          <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex-1">
+                <h3 class="text-xl font-semibold text-gray-900 mb-1">
+                  <%= habit.title %>
+                </h3>
+                <p class="text-gray-600 text-sm"><%= habit.description %></p>
+              </div>
+              <%= link_to habit_path(habit), class: "text-gray-400 hover:text-gray-600" do %>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              <% end %>
+            </div>
+
+            <!-- Streak Display -->
+            <div class="flex items-center space-x-4 mb-4">
+              <div class="flex items-center">
+                <span class="text-2xl">🔥</span>
+                <span class="ml-2 text-lg font-bold text-orange-600">
+                  <%= habit.current_streak %> day streak
+                </span>
+              </div>
+            </div>
+
+            <!-- Progress Stats -->
+            <div class="flex justify-between text-sm text-gray-600 mb-4">
+              <span>Completed: <%= habit.total_completions %> times</span>
+              <span>Rate: <%= habit.completion_rate %>%</span>
+            </div>
+
+            <!-- Daily Check-in -->
+            <div class="border-t pt-4">
+              <% if habit.logged_today? %>
+                <% if habit.completed_today? %>
+                  <div class="flex items-center justify-center text-green-600">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span class="font-medium">Completed today! 🎉</span>
+                  </div>
+                <% else %>
+                  <div class="text-center text-gray-500">
+                    Marked as not done today
+                  </div>
+                <% end %>
+              <% else %>
+                <div class="flex space-x-3">
+                  <%= button_to habit_progress_logs_path(habit), params: { completed: true }, method: :post, class: "flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition" do %>
+                    ✓ Done
+                  <% end %>
+                  <%= button_to habit_progress_logs_path(habit), params: { completed: false }, method: :post, class: "flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition" do %>
+                    ✗ Skip
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12 bg-white rounded-lg shadow">
+        <p class="text-gray-500 text-lg mb-4">No habits yet. Let's create your first one! 🌱</p>
+        <%= link_to "Create Your First Habit", new_habit_path, class: "bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 inline-block" %>
+      </div>
+    <% end %>
+  </div>
+</div>
