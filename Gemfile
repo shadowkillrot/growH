@@ -64,3 +64,11 @@ end
 
 gem "devise", "~> 4.9"
 gem 'tailwindcss-rails'
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
+  gem 'factory_bot_rails'
+  gem 'capybara'
+  gem 'selenium-webdriver'
+end
