@@ -56,19 +56,18 @@ group :development do
   gem "web-console"
 end
 
+gem "devise", "~> 4.9"
+gem 'tailwindcss-rails'
+
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
 end
 
-gem "devise", "~> 4.9"
-gem 'tailwindcss-rails'
 group :development, :test do
   gem 'rspec-rails'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'capybara'
-  gem 'selenium-webdriver'
 end
