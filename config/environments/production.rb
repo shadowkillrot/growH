@@ -80,7 +80,7 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   # Set secret key base for production
-  config.secret_key_base = ENV.fetch("SECRET_KEY_BASE") { "23fa9d462e0464a51bb6818c43354e4e587fd32db2da652992877a6f7ae33b23" }
+  config.secret_key_base = ENV.fetch("SECRET_KEY_BASE") { "4b442998fe0d133b9f3946a9460e8350fa8018f476ba16fa5a7b76fdd9728ed4e50f6f582ebaa76d638760c43c61684b433794107ab294a53cdf54f3b824ebf6" }
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
@@ -90,4 +90,15 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Configure bootsnap for production
+  config.bootsnap = {
+    cache_dir: Rails.root.join("tmp", "cache", "bootsnap"),
+    development_mode: false,
+    load_path_cache: true,
+    autoload_paths_cache: true,
+    disable_trace: false,
+    compile_cache_iseq: true,
+    compile_cache_yaml: true
+  }
 end

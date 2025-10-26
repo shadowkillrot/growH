@@ -1,0 +1,40 @@
+{
+  "name": "GrowH",
+  "description": "A habit tracking application built with Rails 8",
+  "repository": "https://github.com/your-username/growH",
+  "logo": "https://raw.githubusercontent.com/your-username/growH/main/public/icon.svg",
+  "keywords": ["rails", "ruby", "habits", "tracking"],
+  "scripts": {
+    "postdeploy": "bundle exec rails db:migrate"
+  },
+  "env": {
+    "RAILS_ENV": {
+      "description": "Rails environment",
+      "value": "production"
+    },
+    "RAILS_LOG_LEVEL": {
+      "description": "Rails log level",
+      "value": "info"
+    },
+    "SECRET_KEY_BASE": {
+      "description": "Secret key base for Rails",
+      "generator": "secret"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:mini"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-ruby"
+    }
+  ]
+}
