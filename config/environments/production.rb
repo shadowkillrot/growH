@@ -38,7 +38,7 @@ Rails.application.configure do
   config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  config.log_level = "info"
 
   # Prevent health checks from clogging up the logs.
   config.silence_healthcheck_path = "/up"
@@ -58,7 +58,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: ENV.fetch('HOST', 'localhost') }
+  config.action_mailer.default_url_options = { host: 'test1231-24b289936bff.herokuapp.com' }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {
@@ -80,16 +80,16 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   # Set secret key base for production
-  config.secret_key_base = ENV.fetch("SECRET_KEY_BASE") { "4b442998fe0d133b9f3946a9460e8350fa8018f476ba16fa5a7b76fdd9728ed4e50f6f582ebaa76d638760c43c61684b433794107ab294a53cdf54f3b824ebf6" }
+  config.secret_key_base = "4b442998fe0d133b9f3946a9460e8350fa8018f476ba16fa5a7b76fdd9728ed4e50f6f582ebaa76d638760c43c61684b433794107ab294a53cdf54f3b824ebf6"
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  #
+  config.hosts = [
+    "test1231-24b289936bff.herokuapp.com",
+    /.*\.herokuapp\.com/ # Allow requests from Heroku subdomains
+  ]
+  
   # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   # Configure bootsnap for production
   config.bootsnap = {

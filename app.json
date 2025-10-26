@@ -5,21 +5,7 @@
   "logo": "https://raw.githubusercontent.com/your-username/growH/main/public/icon.svg",
   "keywords": ["rails", "ruby", "habits", "tracking"],
   "scripts": {
-    "postdeploy": "bundle exec rails db:migrate"
-  },
-  "env": {
-    "RAILS_ENV": {
-      "description": "Rails environment",
-      "value": "production"
-    },
-    "RAILS_LOG_LEVEL": {
-      "description": "Rails log level",
-      "value": "info"
-    },
-    "SECRET_KEY_BASE": {
-      "description": "Secret key base for Rails",
-      "generator": "secret"
-    }
+    "postdeploy": "bundle exec rails db:migrate RAILS_ENV=production"
   },
   "formation": {
     "web": {

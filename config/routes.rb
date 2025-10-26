@@ -12,4 +12,7 @@ Rails.application.routes.draw do
   end
   
   get "dashboard", to: "dashboard#index"
+  
+  # Health check endpoint for Heroku
+  get "up", to: "rails/health#show", as: :rails_health_check
 end
