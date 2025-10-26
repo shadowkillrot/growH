@@ -13,7 +13,11 @@
       "size": "basic"
     }
   },
-  "addons": [],
+  "addons": [
+    {
+      "plan": "heroku-postgresql:mini"
+    }
+  ],
   "buildpacks": [
     {
       "url": "https://github.com/heroku/heroku-buildpack-ruby"
