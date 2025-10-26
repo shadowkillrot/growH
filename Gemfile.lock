@@ -1,4 +1,7 @@
 GEM
+RUBY VERSION
+   ruby 3.3.9p0
+
   remote: https://rubygems.org/
   specs:
     actioncable (8.0.3)
