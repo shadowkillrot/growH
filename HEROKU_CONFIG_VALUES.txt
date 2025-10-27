@@ -1,0 +1,62 @@
+===============================================
+VALUES TO ENTER IN HEROKU DASHBOARD UI
+===============================================
+
+Go to: https://dashboard.heroku.com/apps/test1231/settings
+
+Under "Config Vars" → "Reveal Config Vars" → Click "Add"
+
+Add these three environment variables:
+
+1. Key: RAILS_MASTER_KEY
+   Value: 693500a6a8ce510a1ebcaae526cc47e7bb40cd0efd50621fb06fdefbf260e284
+
+2. Key: RAILS_ENV
+   Value: production
+
+3. Key: SECRET_KEY_BASE
+   Value: 64ecef7631ed698ba3d590a0a53fafb1fa8fa3c56d27b370d925fc17aa9e035d1e20eb84a47de6e4642c3a6f2223ff9f629624573b77b071a19baa7fe9af6cd4
+
+===============================================
+GETTING THE MASTER KEY
+===============================================
+
+Your master key file seems to be missing or empty.
+We need to regenerate it. Run this in your terminal:
+
+cd ~/Applications/Projects/Jessica/Roni-GrowH-Repo/growH
+
+# Regenerate credentials
+EDITOR="cat >" bin/rails credentials:edit
+
+# Then copy the master key that's displayed
+cat config/master.key
+
+The output will be something like: 4fb59b092703ed15dbe626abcc3bf248
+
+Copy that entire string as the value for RAILS_MASTER_KEY
+
+===============================================
+STEPS TO DEPLOY VIA UI
+===============================================
+
+1. Open: https://dashboard.heroku.com/apps/test1231
+2. Click "Settings" tab
+3. Scroll to "Config Vars" section
+4. Click "Reveal Config Vars"
+5. For each of the 3 variables above:
+   - Click "Add"
+   - Enter the Key
+   - Enter the Value
+   - Click "Add" button
+6. Go to "Deploy" tab
+7. Under "Manual deploy", select "main" branch
+8. Click "Deploy Branch"
+9. Wait for build to complete
+10. Go to "More" menu (top right) → "Run console"
+11. Type: rails db:migrate
+12. Press Enter
+13. Go to "Overview" tab
+14. Click "Open app" button
+
+===============================================
