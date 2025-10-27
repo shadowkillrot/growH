@@ -19,7 +19,10 @@ production:
   <<: *default
   url: <%= ENV['DATABASE_URL'] %>
 
-  # Add this to fix the cable issue
-  cable:
-    <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
+cable:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
+
+cache:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
