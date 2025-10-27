@@ -1,18 +1,25 @@
 default: &default
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: myapp_development
+  username: postgres
+  password:
 
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: myapp_test
+  username: postgres
+  password:
 
 production:
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
+  <<: *default
   url: <%= ENV['DATABASE_URL'] %>
+
+  # Add this to fix the cable issue
+  cable:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
