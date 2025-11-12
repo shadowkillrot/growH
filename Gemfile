@@ -1,11 +1,14 @@
 source "https://rubygems.org"
 
+ruby "3.2.3"
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.0"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 
-gem 'sqlite3'
+gem 'sqlite3', group: [:development, :test]
+gem 'pg', '~> 1.1', group: :production
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -56,19 +59,18 @@ group :development do
   gem "web-console"
 end
 
+gem "devise", "~> 4.9"
+gem 'tailwindcss-rails'
+
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
 end
 
-gem "devise", "~> 4.9"
-gem 'tailwindcss-rails'
 group :development, :test do
   gem 'rspec-rails'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'capybara'
-  gem 'selenium-webdriver'
 end

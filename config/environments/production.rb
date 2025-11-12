@@ -38,7 +38,7 @@ Rails.application.configure do
   config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  config.log_level = "info"
 
   # Prevent health checks from clogging up the logs.
   config.silence_healthcheck_path = "/up"
@@ -51,14 +51,14 @@ Rails.application.configure do
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
   config.active_job.queue_adapter = :solid_queue
-  config.solid_queue.connects_to = { database: { writing: :queue } }
+  config.solid_queue.connects_to = { database: { writing: :primary } }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  config.action_mailer.default_url_options = { host: 'test1231-24b289936bff.herokuapp.com' }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {
@@ -79,12 +79,26 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
 
+  # Secret key base is set via credentials.yml.enc and RAILS_MASTER_KEY env var
+  # If not using credentials, it will fall back to ENV['SECRET_KEY_BASE']
+
   # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  #
+  config.hosts = [
+    "test1231-24b289936bff.herokuapp.com",
+    /.*\.herokuapp\.com/ # Allow requests from Heroku subdomains
+  ]
+  
   # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Configure bootsnap for production
+  config.bootsnap = {
+    cache_dir: Rails.root.join("tmp", "cache", "bootsnap"),
+    development_mode: false,
+    load_path_cache: true,
+    autoload_paths_cache: true,
+    disable_trace: false,
+    compile_cache_iseq: true,
+    compile_cache_yaml: true
+  }
 end

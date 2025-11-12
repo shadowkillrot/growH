@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get "pages/home"
   devise_for :users
  
   authenticated :user do
@@ -13,4 +12,7 @@ Rails.application.routes.draw do
   end
   
   get "dashboard", to: "dashboard#index"
+  
+  # Health check endpoint for Heroku
+  get "up", to: "rails/health#show", as: :rails_health_check
 end
