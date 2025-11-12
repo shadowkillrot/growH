@@ -1,101 +1,156 @@
-# GrowH - Habit Tracking Application
+# GrowH - Build Better Habits
 
-A Rails 8 application for tracking habits and personal growth.
+A simple habit tracking app that helps you build and maintain daily habits through streak tracking and positive encouragement.
 
-## Features
+## Team Members
+- [Your Name] - [Your ID]
+- [Member 2 Name] - [Member 2 ID]
+- [Member 3 Name] - [Member 3 ID]
 
-- User authentication with Devise
-- Habit creation and management
-- Progress tracking
-- Dashboard with streaks and statistics
-- Modern UI with Tailwind CSS
+## What It Does
+GrowH lets you create daily habits, track your progress, and build streaks. It's designed to be simple and encouraging rather than overwhelming.
 
-## Getting Started
-
-### Prerequisites
-
-- Ruby 3.2.3
-- Rails 8.0
-- PostgreSQL (for production)
-- SQLite3 (for development)
-
-### Installation
-
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   bundle install
-   ```
-
-3. Set up the database:
-   ```bash
-   rails db:create
-   rails db:migrate
-   ```
-
-4. Start the server:
-   ```bash
-   rails server
-   ```
-
-## Deployment to Heroku
+## Setup Instructions
 
 ### Prerequisites
-- Heroku CLI installed
-- Git repository
+- Ruby 3.2+
+- Rails 8.0+
+- SQLite3
 
-### Steps
-
-1. Create a Heroku app:
-   ```bash
-   heroku create your-app-name
-   ```
-
-2. Add PostgreSQL addon:
-   ```bash
-   heroku addons:create heroku-postgresql:mini
-   ```
-
-3. Set environment variables:
-   ```bash
-   heroku config:set SECRET_KEY_BASE=$(rails secret)
-   heroku config:set RAILS_ENV=production
-   heroku config:set RAILS_LOG_LEVEL=info
-   ```
-
-4. Deploy:
-   ```bash
-   git push heroku main
-   ```
-
-5. Run migrations:
-   ```bash
-   heroku run rails db:migrate
-   ```
-
-### Required Environment Variables
-
-- `SECRET_KEY_BASE`: Rails secret key (generated automatically)
-- `DATABASE_URL`: PostgreSQL database URL (set by Heroku)
-- `RAILS_ENV`: Set to "production"
-- `RAILS_LOG_LEVEL`: Log level (default: "info")
-
-## Testing
-
-Run the test suite:
+### Installation (Local)
 ```bash
+# Clone the repo
+git clone https://github.com/mch2214/growh-project
+cd growh-project
+
+# Install dependencies
+bundle install
+
+export RAILS_ENV=test
+unset DATABASE_URL
+./bin/rails db:prepare
+
+# Run the app
+./bin/rails server
+```
+
+Visit `http://localhost:3000`
+
+## Running Tests
+
+### Run RSpec tests (TEST env)
+```bash
+export RAILS_ENV=test
+unset DATABASE_URL
 bundle exec rspec
 ```
 
-Run Cucumber features:
+### Run Cucumber tests (TEST env)
 ```bash
+export RAILS_ENV=test
+unset DATABASE_URL
 bundle exec cucumber
 ```
 
-## Contributing
+### Notes
+- Always use `./bin/rails` or `bundle exec rails` to ensure the app uses the bundled gems.
+- Do not install system `rails`; use the binstub provided by the project.
+- Production on Heroku uses PostgreSQL via `ENV["DATABASE_URL"]`. Local development/tests use SQLite.
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+## Features
+- User authentication
+- Create and manage habits
+- Daily progress tracking
+- Streak calculation
+- Motivational quotes
+- Progress statistics
+
+### User Stories (Cucumber Features)
+
+These executable user stories are defined under `features/` and can be run with Cucumber.
+
+- Create Habit (`features/create_habit.feature`):
+  - I can create a new habit with name and description.
+  - A habit cannot be created without passing the validation check for title. 
+
+- Track Daily Progress (`features/track_progress.feature`):
+  - I can mark a habit as done or skipped from the dashboard.
+  - I receive feedback like "Progress logged" and see status such as "Completed today".
+
+- View Streaks (`features/view_streaks.feature`):
+  - I can view my current streak on the dashboard.
+  - Habit details show the day streak and history. 
+
+## Test Inventory
+
+This section enumerates all tests (RSpec and Cucumber) by file, with example/scenario names and purpose.
+
+### RSpec (Unit/Model tests)
+
+- `spec/models/user_spec.rb`
+  - describe associations
+    - it "has many habits" - verifies `User` -> `has_many :habits`.
+  - describe validations
+    - it "is valid with valid attributes" - email/password present.
+    - it "is not valid without email" - requires email.
+
+- `spec/models/habit_spec.rb`
+  - describe associations
+    - it "belongs to user" - verifies `Habit` -> `belongs_to :user`.
+    - it "has many progress logs" - verifies `Habit` -> `has_many :progress_logs`.
+  - describe validations
+    - it "is valid with title and user" - presence of title with owner.
+    - it "is not valid without title" - title required.
+  - describe `#current_streak`
+    - it "returns 0 when no logs exist" - base case.
+    - it "calculates consecutive days correctly" - counts continuous `completed: true` logs.
+  - describe `#total_completions`
+    - it "counts completed logs" - sums only completed entries.
+
+- `spec/models/progress_log_spec.rb`
+  - describe associations
+    - it "belongs to habit" - verifies `ProgressLog` -> `belongs_to :habit`.
+  - describe validations
+    - it "is valid with habit and date" - requires `habit` and `logged_date`.
+    - it "is not valid without logged_date" - date required.
+    - it "prevents duplicate logs for same date" - uniqueness per habit/date.
+
+### Cucumber (Features/Scenarios)
+
+- `features/create_habit.feature` - Create Habit
+  - Scenario: "Create a new habit successfully" - fills name/description, submits, sees success and habit name.
+  - Scenario: "Create habit without title" - submits blank form, sees validation error.
+
+- `features/track_progress.feature` - Track Daily Progress
+  - Scenario: "Mark habit as done" - from dashboard, clicks Done for a habit, sees confirmation and status.
+  - Scenario: "Mark habit as skipped" - from dashboard, clicks Skip, sees confirmation and status.
+
+- `features/view_streaks.feature` - View Streaks
+  - Scenario: "View current streak" - dashboard shows current day streak.
+  - Scenario: "View habit details" - habit show page lists Day Streak and completion history.
+
+### Step Definitions
+
+Implemented in `features/step_definitions/habit_steps.rb`:
+
+- Given "I am a signed in user"
+- Given "I have a habit called {string}"
+- Given "I have completed it for {int} days in a row"
+- When "I visit the new habit page"
+- When "I visit the dashboard"
+- When "I visit the habit details page"
+- When "I fill in {string} with {string}"
+- When "I click {string}"
+- When "I click {string} for {string}"
+- Then "I should see {string}"
+- Then "I should see an error message"
+- Then "I should see my completion history"
+
+## Deployment
+Deployed on Heroku: growh-project-ddc0c0f9238c.herokuapp.com
+
+## Technologies
+- Ruby on Rails
+- Postgres Heroku
+- Devise (authentication)
+- Tailwind CSS
